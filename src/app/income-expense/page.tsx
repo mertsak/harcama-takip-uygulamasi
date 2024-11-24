@@ -40,11 +40,19 @@ const IncomeExpensePage = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-6 w-full max-w-screen-lg mx-auto min-h-[calc(100vh-146px)] overflow-y-auto">
+    <div className="flex flex-col gap-4 py-6 px-4 w-full max-w-screen-lg mx-auto min-h-[calc(100vh-146px)] overflow-y-auto dark:bg-gray-900">
       {/* Bütçe Gösterimi */}
-      <div className="text-center p-4 bg-white rounded-lg shadow-md border border-gray-200">
-        <h2 className="text-2xl font-bold">Toplam Bütçe</h2>
-        <p className="text-3xl font-bold text-green-600">{budget} TL</p>
+      <div className="text-center p-4 bg-white rounded-lg shadow-md border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+          Toplam Bütçe
+        </h2>
+        <p
+          className={`text-3xl font-bold ${
+            budget >= 0 ? "text-green-600" : "text-red-600"
+          } dark:text-white`}
+        >
+          {budget} TL
+        </p>
       </div>
 
       {/* Gelir/Gider Ekleme Butonları */}
@@ -54,7 +62,7 @@ const IncomeExpensePage = () => {
             setTransactionType("income");
             setIsModalOpen(true);
           }}
-          className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600"
+          className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
         >
           Gelir Ekle
         </button>
@@ -63,7 +71,7 @@ const IncomeExpensePage = () => {
             setTransactionType("expense");
             setIsModalOpen(true);
           }}
-          className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600"
+          className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
         >
           Gider Ekle
         </button>

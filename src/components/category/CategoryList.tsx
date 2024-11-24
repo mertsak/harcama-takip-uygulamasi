@@ -39,9 +39,11 @@ export function CategoryList() {
   }, [dispatch]);
 
   return (
-    <div className=" bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+    <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-xl font-semibold">Kategoriler</h2>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+          Kategoriler
+        </h2>
         <div className="group relative">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,24 +67,28 @@ export function CategoryList() {
       </div>
 
       {categories.length === 0 ? (
-        <p className="text-gray-500">Henüz kategori eklenmemiş.</p>
+        <p className="text-gray-500 dark:text-gray-300">
+          Henüz kategori eklenmemiş.
+        </p>
       ) : (
         <div className="space-y-3">
           {[...categories].reverse().map((category) => (
             <div
               key={category.id}
-              className="flex items-center justify-between p-3 bg-gray-100 rounded-md border border-gray-200"
+              className="flex items-center justify-between p-3 bg-gray-100 rounded-md border border-gray-200 dark:bg-gray-700 dark:border-gray-600"
             >
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-medium">{category.name}</h3>
+                  <h3 className="font-medium text-gray-800 dark:text-white">
+                    {category.name}
+                  </h3>
                   {category.isDefault && (
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded dark:bg-blue-600 dark:text-white">
                       Varsayılan
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 dark:text-gray-300">
                   Aylık Limit:{" "}
                   {category.monthlyLimit === 0
                     ? "Belirlenmedi"
@@ -93,7 +99,7 @@ export function CategoryList() {
               <div className="flex gap-2">
                 <button
                   onClick={() => setSelectedCategory(category)}
-                  className="text-blue-500 hover:text-blue-700 p-2"
+                  className="text-blue-500 hover:text-blue-700 p-2 dark:text-blue-400 dark:hover:text-blue-300"
                   title="Limit Belirle"
                 >
                   <svg
@@ -109,7 +115,7 @@ export function CategoryList() {
                 {!category.isDefault && (
                   <button
                     onClick={() => dispatch(deleteCategory(category.id))}
-                    className="text-red-500 hover:text-red-700 p-2"
+                    className="text-red-500 hover:text-red-700 p-2 dark:text-red-400 dark:hover:text-red-300"
                     title="Kategoriyi Sil"
                   >
                     <svg
