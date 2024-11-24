@@ -51,7 +51,7 @@ const IncomeExpensePage = () => {
             budget >= 0 ? "text-green-600" : "text-red-600"
           } dark:text-white`}
         >
-          {budget} TL
+          {budget.toLocaleString("tr-TR")} TL
         </p>
       </div>
 

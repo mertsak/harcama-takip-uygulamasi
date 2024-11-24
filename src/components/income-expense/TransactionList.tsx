@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // useEffect ekleniyor
 import { format } from "date-fns";
 import { tr } from "date-fns/locale";
 import { Category } from "@/redux/categorySlice";
@@ -23,15 +23,21 @@ interface TransactionListProps {
 
 const TransactionList = ({ transactions }: TransactionListProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal durumu
+  const [categories, setCategories] = useState<Category[]>([]); // Kategorileri state olarak tanımla
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // LocalStorage'dan kategorileri al
-  const categoriesFromStorage = localStorage.getItem("categories");
-  const categories = categoriesFromStorage
-    ? JSON.parse(categoriesFromStorage)
-    : [];
+  useEffect(() => {
+    // LocalStorage'dan kategorileri al
+    if (typeof window !== "undefined") {
+      const categoriesFromStorage = localStorage.getItem("categories");
+      const parsedCategories = categoriesFromStorage
+        ? JSON.parse(categoriesFromStorage)
+        : [];
+      setCategories(parsedCategories);
+    }
+  }, []); // Boş bağımlılık dizisi ile yalnızca bileşen ilk yüklendiğinde çalışır
 
   const sortedTransactions = [...transactions].reverse();
 
@@ -53,8 +59,6 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
           transaction.category === categoryId && transaction.type === "expense"
       ) // Sadece gider işlemlerini kontrol et
       .reduce((acc, transaction) => acc + transaction.amount, 0);
-
-    console.log(categoryLimit, totalSpent);
 
     return categoryLimit > 0 && totalSpent >= categoryLimit * 0.8; // %80 limit kontrolü, limit 0'dan büyükse
   };
@@ -86,10 +90,7 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
 
       // Sadece limit aşımı olan veya kalan bütçesi olan kategorileri ekle
       if (limit > 0) {
-        // Limit kontrolü eklendi
-        console.log("deneme");
         if (remainingBudget < 0) {
-          console.log("deneme");
           suggestions.push({
             category: category.name,
             suggestion: `Bu kategoride <strong class="text-red-600">${Math.abs(

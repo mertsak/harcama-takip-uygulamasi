@@ -16,9 +16,12 @@ interface TransactionState {
 
 const loadState = (): TransactionState => {
   try {
-    const savedState = localStorage.getItem("transactionState");
-    if (savedState) {
-      return JSON.parse(savedState);
+    // localStorage'ın erişilebilir olup olmadığını kontrol et
+    if (typeof localStorage !== "undefined") {
+      const savedState = localStorage.getItem("transactionState");
+      if (savedState) {
+        return JSON.parse(savedState);
+      }
     }
   } catch (err) {
     console.error("Error loading state:", err);
