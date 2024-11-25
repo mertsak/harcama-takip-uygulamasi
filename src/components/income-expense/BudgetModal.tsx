@@ -33,7 +33,7 @@ const BudgetModal: React.FC<BudgetModalProps> = ({
                 dangerouslySetInnerHTML={{
                   __html: suggestion.category + ": " + suggestion.suggestion,
                 }}
-              /> // HTML içeriğini güvenli bir şekilde göster
+              />
             ))
           )}
         </ul>

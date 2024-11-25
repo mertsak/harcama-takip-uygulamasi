@@ -10,21 +10,19 @@ import {
   Legend,
 } from "recharts";
 
-// Yıllık işlem türlerini tanımlıyoruz
 interface YearlyTransaction {
   year: number;
   expense: number;
   income: number;
 }
 
-// Transaction nesnesinin türünü tanımlıyoruz
 interface Transaction {
   amount: number;
   category: string;
   date: string;
   description: string;
   id: string;
-  type: string; // "expense" veya "income" olabilir
+  type: string;
 }
 
 const YearlyReport = () => {
@@ -89,8 +87,8 @@ const YearlyReport = () => {
         <XAxis dataKey="year" />
         <YAxis
           domain={[25000, 100000]}
-          tickFormatter={(value) => value.toLocaleString()} // Virgülle ayırma gibi özel bir biçimlendirme
-          minTickGap={0} // Etiketleri daha yakın yerleştirmek için
+          tickFormatter={(value) => value.toLocaleString()}
+          minTickGap={0}
         />
         <Tooltip />
         <Legend />

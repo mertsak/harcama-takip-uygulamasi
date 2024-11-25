@@ -5,10 +5,10 @@
 @keyframes blink {
   0%,
   100% {
-    opacity: 1; /* Tam görünür */
+    opacity: 1;
   }
   50% {
-    opacity: 0; /* Tamamen görünmez */
+    opacity: 0;
   }
 }
 
@@ -21,12 +21,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Tam ekran yüksekliği */
+  height: 100vh;
 }
 
 .spinner {
-  border: 8px solid #f3f3f3; /* Açık gri */
-  border-top: 8px solid #3498db; /* Mavi */
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
   border-radius: 50%;
   width: 50px;
   height: 50px;

@@ -23,17 +23,10 @@ export function CategoryList() {
   useEffect(() => {
     const savedCategories = localStorage.getItem("categories");
 
-    // Debug için loglar
-    console.log("Saved categories:", savedCategories);
-    console.log("Default categories:", defaultCategories);
-
     if (savedCategories && JSON.parse(savedCategories).length > 0) {
-      // Eğer localStorage'da kategori varsa onları yükle
       dispatch(initializeCategories(JSON.parse(savedCategories)));
     } else {
-      // Eğer localStorage boşsa veya geçersizse, varsayılan kategorileri yükle
-      console.log("Loading default categories");
-      localStorage.setItem("categories", JSON.stringify(defaultCategories)); // Önce localStorage'a kaydet
+      localStorage.setItem("categories", JSON.stringify(defaultCategories));
       dispatch(initializeCategories(defaultCategories));
     }
   }, [dispatch]);

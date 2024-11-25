@@ -1,7 +1,7 @@
 import Loading from "@/components/Loading";
 
 const LoadingPage = () => {
-  return <Loading />; // Yükleme bileşenini kullan
+  return <Loading />;
 };
 
 export default LoadingPage;

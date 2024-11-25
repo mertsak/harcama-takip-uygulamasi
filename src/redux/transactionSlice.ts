@@ -16,7 +16,6 @@ interface TransactionState {
 
 const loadState = (): TransactionState => {
   try {
-    // localStorage'ın erişilebilir olup olmadığını kontrol et
     if (typeof localStorage !== "undefined") {
       const savedState = localStorage.getItem("transactionState");
       if (savedState) {
@@ -42,7 +41,6 @@ const transactionSlice = createSlice({
           ? action.payload.amount
           : -action.payload.amount;
 
-      // Save to localStorage
       localStorage.setItem("transactionState", JSON.stringify(state));
     },
   },

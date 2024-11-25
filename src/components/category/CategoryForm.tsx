@@ -27,7 +27,6 @@ export function CategoryForm() {
 
     dispatch(addCategory(newCategory));
 
-    // Formu temizle
     setFormData({
       name: "",
       monthlyLimit: "",

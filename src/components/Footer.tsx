@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Footer = () => {
   return (
     <footer className="bg-white border-t dark:bg-gray-800 dark:border-gray-700">
@@ -11,26 +13,26 @@ const Footer = () => {
 
           {/* Footer Links */}
           <div className="flex space-x-6">
-            <a
+            <Link
               href="#"
               className="text-sm text-gray-600 hover:text-indigo-600 transition-all duration-200 dark:text-gray-300 dark:hover:text-indigo-400"
             >
               Gizlilik Politikası
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="#"
               className="text-sm text-gray-600 hover:text-indigo-600 transition-all duration-200 dark:text-gray-300 dark:hover:text-indigo-400"
             >
               Kullanım Şartları
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="#"
               className="text-sm text-gray-600 hover:text-indigo-600 transition-all duration-200 dark:text-gray-300 dark:hover:text-indigo-400"
             >
               İletişim
-            </a>
+            </Link>
           </div>
         </div>
       </div>

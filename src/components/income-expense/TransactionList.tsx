@@ -18,18 +18,17 @@ interface Transaction {
 
 interface TransactionListProps {
   transactions: Transaction[];
-  categories: Category[]; // Kategorileri props olarak alın
+  categories: Category[];
 }
 
 const TransactionList = ({ transactions }: TransactionListProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal durumu
-  const [categories, setCategories] = useState<Category[]>([]); // Kategorileri state olarak tanımla
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   useEffect(() => {
-    // LocalStorage'dan kategorileri al
     if (typeof window !== "undefined") {
       const categoriesFromStorage = localStorage.getItem("categories");
       const parsedCategories = categoriesFromStorage
@@ -37,7 +36,7 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
         : [];
       setCategories(parsedCategories);
     }
-  }, []); // Boş bağımlılık dizisi ile yalnızca bileşen ilk yüklendiğinde çalışır
+  }, []);
 
   const sortedTransactions = [...transactions].reverse();
 
@@ -51,16 +50,27 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
     return category?.monthlyLimit || 0; // Eğer limit yoksa 0 döndürür
   };
 
-  const isLimitReached = (amount: number, categoryId: string) => {
+  const isLimitReached = (
+    amount: number,
+    categoryId: string,
+    transactionDate: string
+  ) => {
     const categoryLimit = getCategoryLimit(categoryId);
+
+    const transactionMonth = new Date(transactionDate).getMonth();
+    const transactionYear = new Date(transactionDate).getFullYear();
+
     const totalSpent = transactions
       .filter(
         (transaction) =>
-          transaction.category === categoryId && transaction.type === "expense"
-      ) // Sadece gider işlemlerini kontrol et
+          transaction.category === categoryId &&
+          transaction.type === "expense" &&
+          new Date(transaction.date).getMonth() === transactionMonth &&
+          new Date(transaction.date).getFullYear() === transactionYear
+      )
       .reduce((acc, transaction) => acc + transaction.amount, 0);
 
-    return categoryLimit > 0 && totalSpent >= categoryLimit * 0.8; // %80 limit kontrolü, limit 0'dan büyükse
+    return categoryLimit > 0 && totalSpent >= categoryLimit * 0.8;
   };
 
   const resetData = () => {
@@ -82,25 +92,24 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
           (transaction) =>
             transaction.category === category.id &&
             transaction.type === "expense"
-        ) // Sadece gider işlemlerini kontrol et
+        )
         .reduce((acc, transaction) => acc + transaction.amount, 0);
 
       const limit = category.monthlyLimit || 0;
       const remainingBudget = limit - totalSpent;
 
-      // Sadece limit aşımı olan veya kalan bütçesi olan kategorileri ekle
       if (limit > 0) {
         if (remainingBudget < 0) {
           suggestions.push({
             category: category.name,
             suggestion: `Bu kategoride <strong class="text-red-600">${Math.abs(
               remainingBudget
-            )} TL</strong>  aşım var!`, // Değeri kalın yaz
+            )} TL</strong>  aşım var!`,
           });
         } else if (remainingBudget > 0) {
           suggestions.push({
             category: category.name,
-            suggestion: `Bu kategoride <strong class="text-green-600">${remainingBudget} TL </strong> harcama yapabilirsiniz.`, // Değeri kalın yaz
+            suggestion: `Bu kategoride <strong class="text-green-600">${remainingBudget} TL </strong> harcama yapabilirsiniz.`,
           });
         }
       }
@@ -108,17 +117,15 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
 
     return suggestions.filter((suggestion) =>
       suggestion.suggestion.includes("TL")
-    ); // 0 olanları filtrele
+    );
   };
 
   const handleDownloadPDF = () => {
     const doc = new jsPDF();
 
-    // Türkçe karakter desteği için font ayarlama
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(10);
 
-    // AutoTable kullanarak PDF içeriğini oluştur
     autoTable(doc, {
       head: [["Tür", "Açıklama", "Tutar", "Kategori", "Tarih"]],
       body: transactions.map((transaction) => [
@@ -129,7 +136,6 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
         format(new Date(transaction.date), "dd MMMM yyyy", { locale: tr }),
       ]),
       didParseCell: (data) => {
-        // Türkçe karakterlerin doğru görüntülenmesi için
         data.cell.text = data.cell.text.map((text) =>
           text
             .replace(/ğ/g, "g")
@@ -168,7 +174,7 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
           suggestions={getBudgetSuggestions()}
         />
 
-        {sortedTransactions.length > 0 && ( // Eğer işlem varsa butonu göster
+        {sortedTransactions.length > 0 && (
           <button
             onClick={resetData}
             className="mb-4 bg-red-500 text-white p-2 rounded"
@@ -191,7 +197,11 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
       <div className="space-y-3">
         {sortedTransactions.map((transaction) => {
           const totalSpent = transaction.amount; // Toplam harcama değeri
-          const limitReached = isLimitReached(totalSpent, transaction.category); // Limit kontrolü
+          const limitReached = isLimitReached(
+            totalSpent,
+            transaction.category,
+            transaction.date
+          ); // Limit kontrolü
 
           return (
             <div
@@ -229,7 +239,7 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
                   {limitReached && (
                     <p className="text-red-600 text-sm">
                       <span className="blink">⚠️</span> %80 harcama limitine
-                      ulaştınız! {/* Animasyon sınıfı eklendi */}
+                      ulaştınız!
                     </p>
                   )}
                 </div>

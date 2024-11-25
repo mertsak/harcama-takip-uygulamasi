@@ -10,21 +10,19 @@ import {
   Legend,
 } from "recharts";
 
-// Aylık işlem türlerini tanımlıyoruz
 interface MonthlyTransaction {
   month: number;
   expense: number;
   income: number;
 }
 
-// Transaction nesnesinin türünü tanımlıyoruz
 interface Transaction {
   amount: number;
   category: string;
   date: string;
   description: string;
   id: string;
-  type: string; // "expense" veya "income" olabilir
+  type: string;
 }
 
 const MonthlyChart = () => {
@@ -47,12 +45,10 @@ const MonthlyChart = () => {
       let transactions: Transaction[] = [];
 
       try {
-        // JSON.parse ile veriyi ayrıştırıyoruz
         const parsedState = transactionStateString
           ? JSON.parse(transactionStateString)
           : null;
 
-        // parsedState.transactions bir dizi mi kontrol ediyoruz
         if (parsedState && Array.isArray(parsedState.transactions)) {
           transactions = parsedState.transactions;
         } else {
@@ -112,8 +108,8 @@ const MonthlyChart = () => {
             10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000,
             100000,
           ]}
-          tickFormatter={(value) => value.toLocaleString()} // Virgülle ayırma gibi özel bir biçimlendirme
-          minTickGap={0} // Etiketleri daha yakın yerleştirmek için
+          tickFormatter={(value) => value.toLocaleString()}
+          minTickGap={0}
         />
         <Tooltip />
         <Legend />

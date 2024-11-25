@@ -4,7 +4,7 @@ export interface Category {
   id: string;
   name: string;
   monthlyLimit: number;
-  isDefault?: boolean; // Varsayılan kategori kontrolü için
+  isDefault?: boolean;
 }
 
 interface CategoryState {
@@ -22,7 +22,6 @@ const categorySlice = createSlice({
     initializeCategories: (state, action: PayloadAction<Category[]>) => {
       if (action.payload && action.payload.length > 0) {
         state.categories = action.payload;
-        // localStorage'a kaydetme eklendi
         if (typeof window !== "undefined") {
           localStorage.setItem("categories", JSON.stringify(action.payload));
         }
